@@ -243,6 +243,7 @@ class Invoice(UnicodeProperty):
     currency = u"Kč"
 
     use_tax = False
+    tax_rate = False
 
     #: round result to integers?
     rounding_result = False
@@ -273,6 +274,11 @@ class Invoice(UnicodeProperty):
     def price(self):
         """ Total sum price without taxes. """
         return self._round_result(sum(item.total for item in self.items))
+
+    def overall_tax_rate(self,rate):
+        """ apply an overall tax rate to the invoice, which only shows at the end """
+        self.rate = rate / 100
+        self.tax_rate = True
 
     @property
     def price_tax(self):
